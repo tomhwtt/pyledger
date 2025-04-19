@@ -7,7 +7,6 @@ def test_user_dict_returns_expected_values():
     user_dict = user.to_dict()
     uuid_obj = uuid.UUID(user_dict["id"])
 
-    print(type(user_dict["id"]))
     assert user_dict["username"] == "tester"
     assert user_dict["email"] == "tester@example.com"
     assert str(uuid_obj) == user_dict["id"]
