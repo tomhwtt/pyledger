@@ -1,6 +1,6 @@
 import datetime
+import threading
 import uuid
-from app.user import User
 
 
 class Account:
@@ -9,6 +9,7 @@ class Account:
         self.owner = owner
         self.balance = 0
         self.created_at = datetime.datetime.now()
+        self._lock = threading.Lock()
 
     def to_dict(self):
         return {
@@ -19,7 +20,11 @@ class Account:
         }
 
     def deposit(self, amount):
-        pass
+        if amount <= 0:
+            raise ValueError("Deposit must be greater than zero.")
+
+        with self._lock:
+            self.balance += amount
 
     def withdraw(self, amount):
         pass
