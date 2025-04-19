@@ -1,6 +1,7 @@
 import datetime
 import threading
 import uuid
+from app.exceptions import InsufficientFundsError
 
 
 class Account:
@@ -27,4 +28,11 @@ class Account:
             self.balance += amount
 
     def withdraw(self, amount):
-        pass
+        if amount <= 0:
+            raise ValueError("Deposit must be greater than zero.")
+
+        if self.balance - amount < 0:
+            raise InsufficientFundsError("Insufficient Funds")
+
+        with self._lock:
+            self.balance -= amount
