@@ -2,6 +2,7 @@ import datetime
 import threading
 import uuid
 from app.exceptions import InsufficientFundsError
+from app.transaction import Transaction
 
 
 class Account:
@@ -26,6 +27,7 @@ class Account:
 
         with self._lock:
             self.balance += amount
+            return Transaction(self.id, "credit", amount)
 
     def withdraw(self, amount):
         if amount <= 0:
@@ -36,3 +38,4 @@ class Account:
 
         with self._lock:
             self.balance -= amount
+            return Transaction(self.id, "debit", amount)
