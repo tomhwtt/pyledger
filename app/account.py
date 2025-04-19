@@ -27,4 +27,8 @@ class Account:
             self.balance += amount
 
     def withdraw(self, amount):
-        pass
+        if amount <= 0:
+            raise ValueError("Deposit must be greater than zero.")
+
+        with self._lock:
+            self.balance -= amount
