@@ -3,6 +3,7 @@ import uuid
 import pytest
 from app.user import User
 from app.account import Account
+from app.exceptions import InsufficientFundsError
 
 
 def test_user_dict_returns_expected_values():
@@ -48,3 +49,12 @@ def test_withdraw_raises_value_error_if_amount_zero():
 
     with pytest.raises(ValueError):
         account.withdraw(0)
+
+
+def test_withdraw_more_than_balance_raises_insufficient_funds():
+    user = User("tester", "tester@example.com")
+    account = Account(user.id)
+    account.deposit(100.00)
+
+    with pytest.raises(InsufficientFundsError):
+        account.withdraw(101.00)
