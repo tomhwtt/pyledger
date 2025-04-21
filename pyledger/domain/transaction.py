@@ -4,27 +4,27 @@ from uuid import UUID
 
 
 class Transaction:
-    def __init__(self, account: str, type: str, amount: float):
+    def __init__(self, account_id: UUID, type: str, amount: float):
         self.id = str(uuid.uuid4())
-        self.account = account
+        self.account_id = account_id
         self.type = type
         self.amount = amount
         self.created_at = datetime.datetime.now()
 
     @classmethod
-    def create(cls, account: str, type: str, amount: float):
-        return cls(account=account, type=type, amount=amount)
+    def create(cls, account_id: UUID, type: str, amount: float):
+        return cls(account_id=account_id, type=type, amount=amount)
 
     @classmethod
     def reconstruct(
         cls,
         id: UUID,
-        account: str,
+        account_id: UUID,
         type: str,
         amount: float,
         created_at: datetime.datetime,
     ) -> "Transaction":
-        transaction = cls(account, type, amount)
+        transaction = cls(account_id, type, amount)
         transaction.id = id
         transaction.created_at = created_at
         return transaction
@@ -32,7 +32,7 @@ class Transaction:
     def to_dict(self):
         return {
             "id": self.id,
-            "account": self.account,
+            "account_id": self.account_id,
             "type": self.type,
             "amount": self.amount,
             "created_at": self.created_at,

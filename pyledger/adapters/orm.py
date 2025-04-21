@@ -61,7 +61,7 @@ class TransactionModel(Base):
     __tablename__ = "transactions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    account = Column(String, nullable=False)
+    account_id = Column(UUID(as_uuid=True), ForeignKey("accounts.id"), nullable=False)
     type = Column(String, nullable=False)
     amount = Column(Float, nullable=False)
     created_at = Column(
@@ -71,7 +71,7 @@ class TransactionModel(Base):
     def to_domain(self) -> Transaction:
         return Transaction.reconstruct(
             id=self.id,
-            account=self.account,
+            account_id=self.account_id,
             type=self.type,
             amount=self.amount,
             created_at=self.created_at,
@@ -80,7 +80,7 @@ class TransactionModel(Base):
     def from_domain(transaction: Transaction) -> "TransactionModel":
         return TransactionModel(
             id=transaction.id,
-            account=transaction.account,
+            account_id=transaction.account_id,
             type=transaction.type,
             amount=transaction.amount,
             created_at=transaction.created_at,
