@@ -1,5 +1,5 @@
 from pyledger.db import engine, Base
-from pyledger.adapters.orm import UserModel, AccountModel
+from pyledger.adapters.orm import UserModel, AccountModel, TransactionModel
 
 
 def create_tables():
