@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime, timezone
 from sqlalchemy import Column, String, Float, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 from pyledger.db import Base
 from pyledger.domain.user import User
 from pyledger.domain.account import Account
@@ -35,6 +36,7 @@ class AccountModel(Base):
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
+    transactions = relationship("TransactionModel", back_populates="account")
 
     def to_domain(self) -> Account:
         return Account.reconstruct(
@@ -67,6 +69,7 @@ class TransactionModel(Base):
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
+    account = relationship("AccountModel", back_populates="transactions")
 
     def to_domain(self) -> Transaction:
         return Transaction.reconstruct(

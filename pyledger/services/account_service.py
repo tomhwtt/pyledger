@@ -13,5 +13,8 @@ class AccountService:
         self.repo.add(account)
         return account
 
+    def get_by_id(self, account: str) -> Account | None:
+        return self.repo.get_by_id(account)
+
     def get_accounts_for_user(self, user_id: UUID) -> List[Account]:
         return self.repo.get_by_user_id(user_id)

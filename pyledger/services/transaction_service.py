@@ -8,13 +8,14 @@ class TransactionService:
     def __init__(self, transaction_repository: AbstractTransactionRepository):
         self.repo = transaction_repository
 
-    def create_transaction(self, account_id: UUID, type: str, amount: float) -> Transaction:
-        transaction = Transaction.create(account_id=account_id, type=type, amount=amount)
+    def create_transaction(
+        self, account_id: UUID, type: str, amount: float
+    ) -> Transaction:
+        transaction = Transaction.create(
+            account_id=account_id, type=type, amount=amount
+        )
         self.repo.add(transaction)
         return transaction
 
     def get_by_id(self, transaction: str) -> Transaction | None:
         return self.repo.get_by_id(transaction)
-
-    def get_transactions_for_account(self, account_id: UUID) -> List[Transaction]:
-        return self.repo.get_by_account_id(account_id)
