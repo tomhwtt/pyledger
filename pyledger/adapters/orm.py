@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Float, DateTime
+from sqlalchemy import Column, String, Float, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from pyledger.db import Base
 from pyledger.domain.user import User
@@ -29,16 +29,16 @@ class AccountModel(Base):
     __tablename__ = "accounts"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    owner = Column(String, nullable=False)
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     balance = Column(Float, nullable=False, default=0.00)
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
 
     def to_domain(self) -> Account:
-        return Account(
+        return Account.reconstruct(
             id=self.id,
-            owner=self.owner,
+            owner_id=self.owner_id,
             balance=self.balance,
             created_at=self.created_at,
         )
@@ -47,10 +47,10 @@ class AccountModel(Base):
     def from_domain(account: Account) -> "AccountModel":
         return AccountModel(
             id=account.id,
-            owner=account.owner,
+            owner_id=account.owner_id,
             balance=account.balance,
             created_at=account.created_at,
         )
 
     def __repr__(self):
-        return f"<Account(id={self.id})>"
+        return f"<Account(id={self.id}, owner_id={self.owner_id})>"
