@@ -32,7 +32,6 @@ class AccountModel(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    balance = Column(Float, nullable=False, default=0.00)
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
@@ -42,7 +41,6 @@ class AccountModel(Base):
         return Account.reconstruct(
             id=self.id,
             owner_id=self.owner_id,
-            balance=self.balance,
             created_at=self.created_at,
         )
 
@@ -51,7 +49,6 @@ class AccountModel(Base):
         return AccountModel(
             id=account.id,
             owner_id=account.owner_id,
-            balance=account.balance,
             created_at=account.created_at,
         )
 
