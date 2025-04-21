@@ -1,6 +1,12 @@
 import datetime
 import uuid
 from uuid import UUID
+from enum import Enum
+
+
+class TransactionType(str, Enum):
+    CREDIT = "credit"
+    DEBIT = "debit"
 
 
 class Transaction:
@@ -12,7 +18,11 @@ class Transaction:
         self.created_at = datetime.datetime.now()
 
     @classmethod
-    def create(cls, account_id: UUID, type: str, amount: float):
+    def create(cls, account_id: UUID, type: TransactionType, amount: float):
+        if not isinstance(type, TransactionType):
+            raise ValueError("Transaction type must be a TransactionType enum")
+        if amount <= 0:
+            raise ValueError("Amount must be greater than 0")
         return cls(account_id=account_id, type=type, amount=amount)
 
     @classmethod
@@ -20,7 +30,7 @@ class Transaction:
         cls,
         id: UUID,
         account_id: UUID,
-        type: str,
+        type: TransactionType,
         amount: float,
         created_at: datetime.datetime,
     ) -> "Transaction":
