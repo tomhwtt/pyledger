@@ -15,3 +15,8 @@ class AbstractTransactionRepository(ABC):
     def get_by_id(self, id: str) -> Transaction | None:
         """Retrieve a transaction by id."""
         pass
+
+    @abstractmethod
+    def get_by_account_id(self, account_id: UUID) -> List[Transaction]:
+        """Return all transactions belonging to a given account."""
+        pass

@@ -14,6 +14,10 @@ class AccountSqlAlchemyRepository(AbstractAccountRepository):
         account_model = AccountModel.from_domain(account)
         self.session.add(account_model)
 
+    def get_by_id(self, id: str) -> Account | None:
+        row = self.session.query(AccountModel).filter_by(id=id).first()
+        return row.to_domain() if row else None
+
     def get_by_user_id(self, user_id: UUID) -> List[Account]:
         results = (
             self.session.query(AccountModel)

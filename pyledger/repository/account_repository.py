@@ -12,6 +12,11 @@ class AbstractAccountRepository(ABC):
         pass
 
     @abstractmethod
+    def get_by_id(self, id: str) -> Account | None:
+        """Retrieve an Account by id."""
+        pass
+
+    @abstractmethod
     def get_by_user_id(self, user_id: UUID) -> List[Account]:
         """Return all accounts belonging to a given user."""
         pass

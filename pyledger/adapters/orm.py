@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime, timezone
 from sqlalchemy import Column, String, Float, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 from pyledger.db import Base
 from pyledger.domain.user import User
 from pyledger.domain.account import Account
@@ -35,6 +36,7 @@ class AccountModel(Base):
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
+    transactions = relationship("TransactionModel", back_populates="account")
 
     def to_domain(self) -> Account:
         return Account.reconstruct(
@@ -61,17 +63,18 @@ class TransactionModel(Base):
     __tablename__ = "transactions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    account = Column(String, nullable=False)
+    account_id = Column(UUID(as_uuid=True), ForeignKey("accounts.id"), nullable=False)
     type = Column(String, nullable=False)
     amount = Column(Float, nullable=False)
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
+    account = relationship("AccountModel", back_populates="transactions")
 
     def to_domain(self) -> Transaction:
         return Transaction.reconstruct(
             id=self.id,
-            account=self.account,
+            account_id=self.account_id,
             type=self.type,
             amount=self.amount,
             created_at=self.created_at,
@@ -80,7 +83,7 @@ class TransactionModel(Base):
     def from_domain(transaction: Transaction) -> "TransactionModel":
         return TransactionModel(
             id=transaction.id,
-            account=transaction.account,
+            account_id=transaction.account_id,
             type=transaction.type,
             amount=transaction.amount,
             created_at=transaction.created_at,
