@@ -85,3 +85,6 @@ class TransactionModel(Base):
             amount=transaction.amount,
             created_at=transaction.created_at,
         )
+
+    def __repr__(self):
+        return f"<Transaction({self.id})>"
