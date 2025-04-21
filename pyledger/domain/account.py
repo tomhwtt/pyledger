@@ -1,22 +1,37 @@
 import datetime
 import uuid
+from uuid import UUID
 
 
 class Account:
-    def __init__(self, owner: str, id: str = None):
-        self.id = id or str(uuid.uuid4())
-        self.owner = owner
+    def __init__(self, owner_id: UUID, id: UUID = None):
+        self.id = id or uuid.uuid4()
+        self.owner_id = owner_id
         self.balance = 0
         self.created_at = datetime.datetime.now()
 
     @classmethod
-    def create(cls, owner: str) -> "Account":
-        return cls(owner=owner)
+    def create(cls, owner_id: UUID) -> "Account":
+        return cls(owner_id=owner_id)
+
+    @classmethod
+    def reconstruct(
+        cls,
+        id: UUID,
+        owner_id: UUID,
+        balance: float,
+        created_at: datetime.datetime,
+    ) -> "Account":
+        account = cls(owner_id)
+        account.id = id
+        account.balance = balance
+        account.created_at = created_at
+        return account
 
     def to_dict(self):
         return {
-            "id": self.id,
-            "owner": self.owner,
+            "id": str(self.id),
+            "owner_id": str(self.owner_id),
             "balance": self.balance,
-            "created_at": self.created_at,
+            "created_at": self.created_at.isoformat(),
         }
