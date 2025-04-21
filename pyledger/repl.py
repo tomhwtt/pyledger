@@ -13,10 +13,10 @@ session = Session()
 user_repo = UserSqlAlchemyRepository(session)
 user_service = UserService(user_repo)
 
-account_repo = AccountSqlAlchemyRepository(session)
-account_service = AccountService(account_repo)
-
 transaction_repo = TransactionSqlAlchemyRepository(session)
 transaction_service = TransactionService(transaction_repo)
+
+account_repo = AccountSqlAlchemyRepository(session)
+account_service = AccountService(account_repo, transaction_repo)
 
 print("REPL ready.")
