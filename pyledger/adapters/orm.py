@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from pyledger.db import Base
 from pyledger.domain.user import User
 from pyledger.domain.account import Account
+from pyledger.domain.transaction import Transaction
 
 
 class UserModel(Base):
@@ -54,3 +55,33 @@ class AccountModel(Base):
 
     def __repr__(self):
         return f"<Account(id={self.id}, owner_id={self.owner_id})>"
+
+
+class TransactionModel(Base):
+    __tablename__ = "transactions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    account = Column(String, nullable=False)
+    type = Column(String, nullable=False)
+    amount = Column(Float, nullable=False)
+    created_at = Column(
+        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+
+    def to_domain(self) -> Transaction:
+        return Transaction.reconstruct(
+            id=self.id,
+            account=self.account,
+            type=self.type,
+            amount=self.amount,
+            created_at=self.created_at,
+        )
+
+    def from_domain(transaction: Transaction) -> "TransactionModel":
+        return TransactionModel(
+            id=transaction.id,
+            account=transaction.account,
+            type=transaction.type,
+            amount=transaction.amount,
+            created_at=transaction.created_at,
+        )
