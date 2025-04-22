@@ -74,7 +74,7 @@ docker-compose up -d
 python create_tables.py
 
 # Open an interactive Python REPL
-python -m -i pyledger.repl
+python -i -m pyledger.repl
 ```
 ### Once inside the REPL
 You can run commands like:
