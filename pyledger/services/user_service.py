@@ -6,7 +6,7 @@ class UserService:
     def __init__(self, user_repository: AbstractUserRepository):
         self.repo = user_repository
 
-    def register_user(self, username: str, email: str) -> User:
+    def create_user(self, username: str, email: str) -> User:
         if self.repo.get_by_email(email):
             raise ValueError("User with this email already exists.")
 
