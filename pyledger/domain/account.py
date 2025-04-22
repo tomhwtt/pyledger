@@ -4,8 +4,8 @@ from uuid import UUID
 
 
 class Account:
-    def __init__(self, owner_id: UUID, id: UUID = None):
-        self.id = id or uuid.uuid4()
+    def __init__(self, owner_id: UUID):
+        self.id = uuid.uuid4()
         self.owner_id = owner_id
         self.created_at = datetime.datetime.now()
 

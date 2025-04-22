@@ -11,7 +11,7 @@ class TransactionType(str, Enum):
 
 class Transaction:
     def __init__(self, account_id: UUID, type: str, amount: float):
-        self.id = str(uuid.uuid4())
+        self.id = uuid.uuid4()
         self.account_id = account_id
         self.type = type
         self.amount = amount
