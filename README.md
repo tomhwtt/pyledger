@@ -53,6 +53,17 @@ The app is being developed with `pytest`, with a focus on testability at both th
 - PostgreSQL migrations
 - More robust testing and edge-case handling
 
+## 🛠️ Database Configuration
+
+By default, the app connects to a local PostgreSQL instance using the following credentials:
+
+- user: `pyledger_user`
+- password: `pyledger_pass`
+- db: `pyledger`
+
+You can override these by setting environment variables (e.g. `POSTGRES_USER`, `POSTGRES_DB`, etc.).
+
+
 ## 🚀 Running Locally (with Docker)
 
 ```
@@ -63,7 +74,7 @@ docker-compose up -d
 python create_tables.py
 
 # Open an interactive Python REPL
-python -m -i pyledger.repl
+python -i -m pyledger.repl
 ```
 ### Once inside the REPL
 You can run commands like:
