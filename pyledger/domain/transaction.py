@@ -41,11 +41,11 @@ class Transaction:
 
     def to_dict(self):
         return {
-            "id": self.id,
-            "account_id": self.account_id,
+            "id": str(self.id),
+            "account_id": str(self.account_id),
             "type": self.type,
             "amount": self.amount,
-            "created_at": self.created_at,
+            "created_at": self.created_at.isoformat(),
         }
 
     def __str__(self):
